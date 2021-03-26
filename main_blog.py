@@ -37,4 +37,4 @@ def unauthorized():
 #로그인되지 않은 사용자가 로그인이 필요한 api에 request했을 때 자동호출되는 코드
 
 if __name__=='__main__':
-    app.rum(host='0.0.0.0',port='8080',debug=True)
+    app.run(host='0.0.0.0',port='8080',debug=True)
