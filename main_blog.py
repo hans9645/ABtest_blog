@@ -1,6 +1,7 @@
 from flask import Flask,jsonify,request,render_template, make_response
 from flask_login import LoginManager, current_user, login_required,login_user,logout_user
 from flask_cors import CORS
+from blog_view import blog_bp
 import os #추후 확장을 위한 임포트
 
 #request argument를 받는데 사용함.
@@ -18,8 +19,9 @@ os.environ['OAUTHLIB_INSECURE_TRANSPORT']='1'
 app= Flask(__name__,static_url_path="/static")
 #서버 생성, static_url_path설정을 통해 static폴더에서 html의 필요한 폴더를 가져오라고 함.
 CORS(app)
-app.secure_key="hans_server" #보안을 높이려면 바뀌는 코드를 넣어야하지만 그럴 경우 껏다키면 세션이 사라짐.
+app.secure_key="divertome_server" #보안을 높이려면 바뀌는 코드를 넣어야하지만 그럴 경우 껏다키면 세션이 사라짐.
 
+app.register_blueprint(blog_bp.blog_abtest,url_prefix="/blueprint")
 login_manager=LoginManager()
 login_manager.init_app(app) #flask객체를 로그인매니저에 등록.
 login_manager.session_protection="strong" #세션코드를 보다 복잡하게 만드는 코드
@@ -31,7 +33,7 @@ def load_user(user_id):
 #user_id를 받아와 mySQL에서 해당 아이디 기반의 레코드를 가져와 객체로 리턴.
 
 
-@login_manager.unauthorized
+@login_manager.unauthorized_handler
 def unauthorized():
     return make_response(jsonify(success=False),401)
 #로그인되지 않은 사용자가 로그인이 필요한 api에 request했을 때 자동호출되는 코드
