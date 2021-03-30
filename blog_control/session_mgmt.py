@@ -17,7 +17,7 @@ class BlogSession():
             'user_email':user_email,
             'page':webpage_name,
             'access_time':now_time
-            })
+             }) 
 
     
     @staticmethod
