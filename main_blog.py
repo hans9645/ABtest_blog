@@ -3,6 +3,7 @@ from flask_login import LoginManager, current_user, login_required,login_user,lo
 from flask_cors import CORS
 from blog_view import blog_bp
 import os #추후 확장을 위한 임포트
+from blog_control.user_mgmt import User
 
 #request argument를 받는데 사용함.
 #make_response http status를 받기 위해
@@ -19,7 +20,7 @@ os.environ['OAUTHLIB_INSECURE_TRANSPORT']='1'
 app= Flask(__name__,static_url_path="/static")
 #서버 생성, static_url_path설정을 통해 static폴더에서 html의 필요한 폴더를 가져오라고 함.
 CORS(app)
-app.secure_key="divertome_server" #보안을 높이려면 바뀌는 코드를 넣어야하지만 그럴 경우 껏다키면 세션이 사라짐.
+app.secret_key="server" #보안을 높이려면 바뀌는 코드를 넣어야하지만 그럴 경우 껏다키면 세션이 사라짐.
 
 app.register_blueprint(blog_bp.blog_abtest,url_prefix="/blueprint")
 login_manager=LoginManager()
@@ -31,7 +32,7 @@ login_manager.session_protection="strong" #세션코드를 보다 복잡하게 �
 def load_user(user_id):
     return User.get(user_id)
 #user_id를 받아와 mySQL에서 해당 아이디 기반의 레코드를 가져와 객체로 리턴.
-
+#플라스크 내부적으로 세션으로부터 user_id를 분리해낸다.
 
 @login_manager.unauthorized_handler
 def unauthorized():
