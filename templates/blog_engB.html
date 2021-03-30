@@ -77,11 +77,12 @@
                     College of Agriculture & Life Sciences<br>
                     Kyungpook National University</p>
             </div>
-            <div class="lead mb-0">
-                <form>
+            <div class="lead mb-2">
+                <form action="/blueprint/set_email" method="GET">
                     <div class="form-row">
                         <div class="col">
-                            <input type="email" class="form-control" placeholder="email add">
+                            <input type="email" class="form-control" placeholder="email add" name="user_email">
+                            <input type="hidden" name="blog_id" value="B">
                         </div>
                         <div class="col">
                             <button type="submit" class="btn btn-primary">구독</button>
