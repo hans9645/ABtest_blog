@@ -78,6 +78,10 @@
                     Kyungpook National University</p>
             </div>
             <div class="lead mb-2">
+                {% if user_email != null %}
+                {{ user_email}} 이메일 주소로 구독 중입니다.
+                {% else %}
+                이메일을 남겨주시면, 블로그 연재시 메일로 송부드립니다. &nbsp;
                 <form action="/blueprint/set_email" method="POST">
                     <div class="form-row">
                         <div class="col">
@@ -90,6 +94,7 @@
                     </div>
 
                 </form>
+                {% endif %}
 
             </div>
         </div>
