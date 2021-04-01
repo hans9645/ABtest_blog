@@ -1,4 +1,4 @@
-from flask import Flask,jsonify,request,render_template, make_response
+from flask import Flask,jsonify,request,render_template, make_response,session
 from flask_login import LoginManager, current_user, login_required,login_user,logout_user
 from flask_cors import CORS
 from blog_view import blog_bp
@@ -13,6 +13,7 @@ from blog_control.user_mgmt import User
 #logout_user: 로그아웃을 통한 세션 해제
 #CORS: 자바스크립트를 사용한 api 등의 리소스 호출시 동일 출처(같은 호스트네임)가 아니더라도 정상적으로 사용 가능하도록 도와주는 방법
 #oauth2 보안 로그인 프로토콜 ->social login
+#session: requset 요청을 한 웹브라우저의 IP주소 등을 가져올 수 있는 라이브러리
 
 #https 만을 지원하는 기능을 http에서 테스트할 때 필요한 설정
 os.environ['OAUTHLIB_INSECURE_TRANSPORT']='1'
@@ -38,6 +39,11 @@ def load_user(user_id):
 def unauthorized():
     return make_response(jsonify(success=False),401)
 #로그인되지 않은 사용자가 로그인이 필요한 api에 request했을 때 자동호출되는 코드
+
+@app.before_request#웹 브라우저가 request를 하기 전에 자동으로 호출하는 함수를 뜻함.
+def app_before_request():
+    if 'client_id' not in session:
+        session['client_id']=request.environ.get('HTTP_X_REAL_IP',request.remote_addr)
 
 if __name__=='__main__':
     app.run(host='0.0.0.0',port='8080',debug=True)

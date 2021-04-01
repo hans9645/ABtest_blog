@@ -54,3 +54,12 @@ class User(UserMixin):
         else:
             return user
             
+
+    @staticmethod
+    def delete(user_id):
+        mysql_db=conn_mysqldb()
+        db_cursor=mysql_db.cursor()
+        sql="DELETE FROM user_info WHERE user_id= %d " %(user_id)
+        deleted=db_cursor.execute(sql)
+        mysql_db.commit() #mysql에 데이터 변형이 일어나는 것이므로 커밋을 하는 게 좋다.
+        return deleted
