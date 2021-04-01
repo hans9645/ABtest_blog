@@ -1,11 +1,11 @@
-from flask import Flask,Blueprint,request,render_template,redirect,make_response,jsonify,url_for
+from flask import Flask,Blueprint,request,render_template,redirect,make_response,jsonify,url_for,session
 from blog_control.user_mgmt import User
 from flask_login import login_user,current_user,logout_user
 import datetime
 from blog_control.session_mgmt import BlogSession
 #login_user:서버단에서 세션 쿠키셋관련 임포트
 #current_user: 세션확인 할 때 사용
-
+#main코드에 app에 최초 before request함수를 정의해둬서 블루프린트로 정의된 라우팅으로 들어와도 자동으로 before requset가 실행됨.
 blog_abtest=Blueprint('blog_bp',__name__)
 
 @blog_abtest.route('/engA')
@@ -25,7 +25,10 @@ def fullstack():
     if current_user.is_authenticated:#세션확인 후 구독이력 확인
         return render_template("blog_engA.html",user_email=current_user.user_email)#여기에 jinja2에 들어갈 변수를 같이 넣어준다.
     else:
-        return render_template(BlogSession.get_blog_page())
+        web_page=BlogSession.get_blog_page()
+        BlogSession.save_session_info(session['client_id'],'anonymous',web_page)
+        #로그인하지않은 방문자의 IP등을 세션라이브러리로부터 받아와서 넣는다.
+        return render_template(web_page)
 
 
 @blog_abtest.route('/logout')
