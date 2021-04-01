@@ -11,7 +11,7 @@ class BlogSession():
         now =datetime.now()
         now_time=now.strftime("%d-%m-%Y %H:%M:%S") #https:strftime.org
 
-        mongo_db=conn_mongodb()
+        mongo_db=conn_mongodb(conn_mongodb)
         mongo_db.insert_one({
             'session_ip':session_ip,
             'user_email':user_email,
