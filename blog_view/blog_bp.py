@@ -1,6 +1,7 @@
 from flask import Flask,Blueprint,request,render_template,redirect,make_response,jsonify,url_for
 from blog_control.user_mgmt import User
-from flask_login import login_user,current_user
+from flask_login import login_user,current_user,logout_user
+import datetime
 #login_user:서버단에서 세션 쿠키셋관련 임포트
 #current_user: 세션확인 할 때 사용
 
@@ -15,6 +16,12 @@ def engA():
 @blog_abtest.route('/engB')
 def engB():
     return render_template("blog_engB.html")
+
+
+@blog_abtest.route('/logout')
+def logout():
+    logout_user() #어차피 라우팅 리퀘스트시 세션에 로그인 정보가 있다.
+    return redirect(url_for('blog_bp.engA'))
 
 
 @blog_abtest.route('/set_email',methods=['GET','POST'])
@@ -35,6 +42,7 @@ def set_email():
         print('only user_email',request.form['user_email'])
         #post방식으로 데이터를 가져올 수 있다. vue에서 했었음
         user=User.create(request.form['user_email'],'A')
-        login_user(user)
+        login_user(user,remember=True, duration=datetime.timedelta(days=30))
+        #로그인 기록유지 시킴 remember me,flask_login google검색
         #세션정보가 플라스크에서 만들어져 셋쿠키로 웹브라우저에 전송, 웹브라우저는 서버주소와 쿠키를 저장,관리를 하면서 다음에 해당서버에 request를 할 때 사용한다. 
         return redirect(url_for('blog_bp.engA'))

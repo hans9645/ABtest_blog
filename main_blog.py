@@ -20,7 +20,7 @@ os.environ['OAUTHLIB_INSECURE_TRANSPORT']='1'
 app= Flask(__name__,static_url_path="/static")
 #서버 생성, static_url_path설정을 통해 static폴더에서 html의 필요한 폴더를 가져오라고 함.
 CORS(app)
-app.secret_key="server" #보안을 높이려면 바뀌는 코드를 넣어야하지만 그럴 경우 껏다키면 세션이 사라짐.
+app.secret_key="server1" #보안을 높이려면 바뀌는 코드를 넣어야하지만 그럴 경우 껏다키면 세션이 사라짐.
 
 app.register_blueprint(blog_bp.blog_abtest,url_prefix="/blueprint")
 login_manager=LoginManager()
