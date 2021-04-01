@@ -2,7 +2,7 @@ from db_model.mongodb import conn_mongodb
 from datetime import datetime
 
 class BlogSession():
-    blog_page={'A':'blog_engA.html','B':'blog_endB.html'}
+    blog_page={'A':'blog_engA.html','B':'blog_engB.html'}
     session_count=0
 
     @staticmethod
@@ -25,9 +25,9 @@ class BlogSession():
         if blog_id==None:
             if BlogSession.session_count==0:
                 BlogSession.session_count=1
-                return 'blog_engA.html'
+                return BlogSession.blog_page['A']
             else:
                 BlogSession.session_count=0
-                return 'blog_engB.html'
+                return BlogSession.blog_page['B']
         else:
             return BlogSession.blog_page[blog_id]

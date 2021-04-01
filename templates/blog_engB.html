@@ -60,8 +60,7 @@
                 <div class="row flex-nowrap justify-content-between align-items-center">
 
                     <div class="col-4 text-center">
-                        <a class="blog-header-logo text-dark" href="https://cals.knu.ac.kr/HOME/cals/index.htm">Insect
-                            Molecular Physiology Laboratory</a>
+                        <a class="blog-header-logo text-dark" href="https://cals.knu.ac.kr/HOME/cals/index.htm">곤충생리학실험실</a>
                     </div>
                 </div>
         </header>
@@ -78,18 +77,23 @@
                     Kyungpook National University</p>
             </div>
             <div class="lead mb-2">
-                <form action="/blueprint/set_email" method="GET">
+                {% if user_email != null %}
+                {{ user_email}} 이메일 주소로 구독 중입니다. <br>
+                <a class="btn btn-light" href="/blueprint/logout" role="button">구독취소</a>
+                {% else %}
+                이메일을 남겨주시면, 블로그 연재시 메일로 송부드립니다. &nbsp;
+                <form action="/blueprint/set_email" method="POST">
                     <div class="form-row">
                         <div class="col">
                             <input type="email" class="form-control" placeholder="email add" name="user_email">
-                            <input type="hidden" name="blog_id" value="B">
+                            <input type="hidden" name="blog_id" value="A">
                         </div>
                         <div class="col">
                             <button type="submit" class="btn btn-primary">구독</button>
                         </div>
                     </div>
-
                 </form>
+                {% endif %}
 
             </div>
         </div>

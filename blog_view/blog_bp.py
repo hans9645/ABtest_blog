@@ -2,6 +2,7 @@ from flask import Flask,Blueprint,request,render_template,redirect,make_response
 from blog_control.user_mgmt import User
 from flask_login import login_user,current_user,logout_user
 import datetime
+from blog_control.session_mgmt import BlogSession
 #login_user:서버단에서 세션 쿠키셋관련 임포트
 #current_user: 세션확인 할 때 사용
 
@@ -18,10 +19,20 @@ def engB():
     return render_template("blog_engB.html")
 
 
+@blog_abtest.route('/fullstack')
+def fullstack():
+    
+    if current_user.is_authenticated:#세션확인 후 구독이력 확인
+        return render_template("blog_engA.html",user_email=current_user.user_email)#여기에 jinja2에 들어갈 변수를 같이 넣어준다.
+    else:
+        return render_template(BlogSession.get_blog_page())
+
+
 @blog_abtest.route('/logout')
 def logout():
+    User.delete(user_id=current_user.id)
     logout_user() #어차피 라우팅 리퀘스트시 세션에 로그인 정보가 있다.
-    return redirect(url_for('blog_bp.engA'))
+    return redirect(url_for('blog_bp.fullstack'))
 
 
 @blog_abtest.route('/set_email',methods=['GET','POST'])
