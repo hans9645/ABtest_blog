@@ -48,7 +48,7 @@ def set_email():
         #return make_response(jsonify(success=True),200) 
         #->vue와 같은 js를 사용하지 않고 서버단에서 풀스택을 구현하는 거라 전체페이지를 리로딩하는 식으로한다.
         #return redirect(url_for('blog_bp.engA'))
-        return redirect('/blueprint/engA')
+        return redirect(url_for(request.form['blog_id']))
     else:
         #print('http check',request.headers)
         #http request의 헤더부분을 가져올 수 있다. 이후 content type를 확인하고 데이터를 어떻게 가져와야하는지 고민하자.
@@ -61,4 +61,8 @@ def set_email():
         login_user(user,remember=True, duration=datetime.timedelta(days=30))
         #로그인 기록유지 시킴 remember me,flask_login google검색
         #세션정보가 플라스크에서 만들어져 셋쿠키로 웹브라우저에 전송, 웹브라우저는 서버주소와 쿠키를 저장,관리를 하면서 다음에 해당서버에 request를 할 때 사용한다. 
-        return redirect(url_for(request.form['blog_id']))
+        #return redirect(url_for(request.form['blog_id']))
+        return redirect('/blueprint/fullstack')
+
+    
+
